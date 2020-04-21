@@ -4,7 +4,19 @@ import pandas as pd
 
 
 raw_data = pd.read_csv('data.csv',)
-for i in range(0, 100):
+graphics_count = 0
+
+while True:
+    try:
+        print("How many graphics to show?\nEnter number from 1 to 100:")
+        graphics_count = int(input())
+        break
+    except ValueError:
+        pass
+    except Exception:
+        break
+
+for i in range(0, graphics_count):
 
     x_data = raw_data['x'][i*201:(i+1)*201]
     y_data = raw_data['y'][i*201:(i+1)*201]
