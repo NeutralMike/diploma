@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-raw_data = pd.read_csv('data.csv',)
+raw_data = pd.read_csv('data/data.csv', )
 graphics_count = 0
 
 while True:

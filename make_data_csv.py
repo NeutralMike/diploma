@@ -23,6 +23,6 @@ df = pd.DataFrame(data_dict)
 
 df.to_csv('data.csv', index=False)
 
-data = pd.read_csv('data.csv')
+data = pd.read_csv('data/data.csv')
 print(data)
 

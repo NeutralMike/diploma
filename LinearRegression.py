@@ -5,7 +5,7 @@ from sklearn.metrics import explained_variance_score
 import pandas as pd
 import numpy as np
 
-raw_data = pd.read_csv('data.csv',)
+raw_data = pd.read_csv('data/data.csv', )
 scores = []
 
 X = raw_data[['a', 'b']]

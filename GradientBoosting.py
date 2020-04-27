@@ -4,7 +4,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 import pandas as pd
 import numpy as np
 
-raw_data = pd.read_csv('data.csv', )
+raw_data = pd.read_csv('data/data.csv', )
 X = raw_data[['a', 'b', 'x']]
 y = raw_data['y']
 X_train, X_test, y_train, y_test = train_test_split(X, y)
