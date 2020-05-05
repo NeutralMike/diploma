@@ -1,6 +1,7 @@
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, ElasticNet, ElasticNetCV
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 import pandas as pd
 
@@ -13,8 +14,8 @@ raw_data = pd.concat([
     pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время'),
     pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время', decimal=','),
 ])
-x_cols_list = ['Tвв', 'Fв', 'ИМП', 'Lб', 'Рпб', 'Fп', 'Тнв', 'fвент', 'ИМВ', 'Рвл', 'Рвп', 'Fг', 'Tг', 'ИМГ', 'Pгг', 'Ргл', 'Ргп', 'Ртк', 'СО', 'fдым', 'ИМТ']
-y_cols_list = ['Tвэ', 'Pвэ', 'О2к', 'О2э', 'Рдк', 'Tдк', 'Тдэ', 'Pдэ']
+x_cols_list = ['Tвв', 'Tвэ', 'Fв', 'Pвэ', 'ИМП', 'Lб', 'Рпб', 'Fп', 'Тнв', 'fвент', 'ИМВ', 'Рвл', 'Рвп', 'Fг', 'Tг', 'ИМГ', 'Pгг', 'Ргл', 'Ргп', 'Ртк', 'СО', 'О2э', 'Тдэ', 'fдым', 'ИМТ', 'Pдэ']
+y_cols_list = ['О2к', 'Рдк', 'Tдк']
 X = raw_data[x_cols_list]
 # print(X)
 for i in y_cols_list:
@@ -22,9 +23,14 @@ for i in y_cols_list:
     X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle=False)
     regr = LinearRegression()
     regr.fit(X_train, y_train)
+    elastic = ElasticNetCV()
+    elastic.fit(X_train, y_train)
     boost_regr = GradientBoostingRegressor()
     boost_regr.fit(X_train, y_train)
-    print('Prediction for \"', i, '\" :\n    Linear regression: ', regr.score(X_test, y_test), '\n    Gradient boosting: ', boost_regr.score(X_test, y_test))
+    print('Prediction for \"', i, '\" :',
+          '\n    Linear regression: ', regr.score(X_test, y_test),
+          '\n    Linear regression with L1 and L2: ', elastic.score(X_test, y_test),
+          '\n    Gradient boosting: ', boost_regr.score(X_test, y_test))
     # y_pred = regr.predict(X_test)
     # for i in range(len(y_test)):
     #     print(y_pred[i], " ", list(y_test)[i])
