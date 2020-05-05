@@ -20,16 +20,19 @@ X = raw_data[x_cols_list]
 # print(X)
 for i in y_cols_list:
     y = raw_data[i]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle=False)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
     regr = LinearRegression()
     regr.fit(X_train, y_train)
-    elastic = ElasticNetCV()
+    elastic = ElasticNet()
     elastic.fit(X_train, y_train)
+    elastic_cv = ElasticNetCV()
+    elastic_cv.fit(X_train, y_train)
     boost_regr = GradientBoostingRegressor()
     boost_regr.fit(X_train, y_train)
     print('Prediction for \"', i, '\" :',
           '\n    Linear regression: ', regr.score(X_test, y_test),
           '\n    Linear regression with L1 and L2: ', elastic.score(X_test, y_test),
+          '\n    Linear regression with L1 and L2 and cross-validation: ', elastic_cv.score(X_test, y_test),
           '\n    Gradient boosting: ', boost_regr.score(X_test, y_test))
     # y_pred = regr.predict(X_test)
     # for i in range(len(y_test)):
