@@ -14,8 +14,8 @@ raw_data = pd.concat([
     pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время'),
     pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время', decimal=','),
 ])
-x_cols_list = ['Tвв', 'Tвэ', 'Fв', 'Pвэ', 'ИМП', 'Lб', 'Рпб', 'Fп', 'Тнв', 'fвент', 'ИМВ', 'Рвл', 'Рвп', 'Fг', 'Tг', 'ИМГ', 'Pгг', 'Ргл', 'Ргп', 'Ртк', 'СО', 'О2э', 'Тдэ', 'fдым', 'ИМТ', 'Pдэ']
-y_cols_list = ['О2к', 'Рдк', 'Tдк']
+x_cols_list = ['ИМП', 'fвент', 'ИМГ', 'fдым']
+y_cols_list = ['СО', 'О2к', 'Fв', 'Fг']
 X = raw_data[x_cols_list]
 # print(X)
 for i in y_cols_list:
