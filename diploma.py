@@ -6,20 +6,25 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 raw_data = pd.concat([
-    pd.read_excel('data/1-500.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время'),
-    pd.read_excel('data/501-1000.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время'),
-    pd.read_excel('data/1001-1500.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время', decimal=','),
-    pd.read_excel('data/1501-2000.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время', decimal=','),
-    pd.read_excel('data/2001-2500.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время'),
-    pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время'),
-    pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], index_col='Дата_Время', decimal=','),
+    pd.read_excel('data/1-500.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/501-1000.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/1001-1500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
+    pd.read_excel('data/1501-2000.xls', parse_dates=[['Дата', 'Время']], decimal=','),
+    pd.read_excel('data/2001-2500.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
 ])
-x_cols_list = ['ИМП', 'fвент', 'ИМГ', 'fдым']
-y_cols_list = ['СО', 'О2к', 'Fв', 'Fг']
-X = raw_data[x_cols_list]
+raw_data['Дата_Время'] = pd.to_numeric(raw_data['Дата_Время'])
+features_of_y = {
+    'Fг': ['Pвэ', 'Рпб', 'ИМГ', 'fдым', 'Pдэ', 'Рго'],
+    'Fв': ['Pвэ', 'Рпб', 'Tвэ', 'ИМП', 'Tдк'],
+    'СО': ['Tг', 'Pдэ', 'Рго', 'fдым', 'Дата_Время'],
+    'О2к': ['Tг', 'Pдэ', 'Рго', 'fдым', 'Дата_Время'],
+}
 # print(X)
-for i in y_cols_list:
-    y = raw_data[i]
+for y_col, x_cols_list in features_of_y.items():
+    y = raw_data[y_col]
+    X = raw_data[x_cols_list]
     X_train, X_test, y_train, y_test = train_test_split(X, y)
     regr = LinearRegression()
     regr.fit(X_train, y_train)
@@ -29,7 +34,7 @@ for i in y_cols_list:
     elastic_cv.fit(X_train, y_train)
     boost_regr = GradientBoostingRegressor()
     boost_regr.fit(X_train, y_train)
-    print('Prediction for \"', i, '\" :',
+    print('Prediction for \"', y_col, '\" :',
           '\n    Linear regression: ', regr.score(X_test, y_test),
           '\n    Linear regression with L1 and L2: ', elastic.score(X_test, y_test),
           '\n    Linear regression with L1 and L2 and cross-validation: ', elastic_cv.score(X_test, y_test),
