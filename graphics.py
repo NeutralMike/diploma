@@ -3,29 +3,25 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-raw_data = pd.read_csv('data/data.csv', )
-graphics_count = 0
+raw_data = pd.concat([
+    pd.read_excel('data/1-500.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/501-1000.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/1001-1500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
+    pd.read_excel('data/1501-2000.xls', parse_dates=[['Дата', 'Время']], decimal=','),
+    pd.read_excel('data/2001-2500.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']]),
+    pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
+])[1000:1100]
+raw_data['Дата_Время'] = pd.to_numeric(raw_data['Дата_Время'])
 
-while True:
-    try:
-        print("How many graphics to show?\nEnter number from 1 to 100:")
-        graphics_count = int(input())
-        break
-    except ValueError:
-        pass
-    except Exception:
-        break
+x_data = range(0, len(raw_data))
 
-for i in range(0, graphics_count):
+_, ax = plt.subplots()
 
-    x_data = raw_data['x'][i*201:(i+1)*201]
-    y_data = raw_data['y'][i*201:(i+1)*201]
+ax.plot(x_data, raw_data['Fг']/raw_data['Fв'], label='Fг/Fв')
+ax.plot(x_data, raw_data['ИМП'], label='ИМП')
+ax.plot(x_data, raw_data['ИМГ'], label='ИМГ')
 
-    _, ax = plt.subplots()
-
-    ax.plot(x_data, y_data, color = '#539caf')
-
-    ax.set_title("Graphic")
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    plt.show()
+ax.set_title("Graphic")
+ax.legend()
+plt.show()

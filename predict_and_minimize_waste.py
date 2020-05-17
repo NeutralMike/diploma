@@ -1,19 +1,8 @@
-from sklearn.linear_model import LinearRegression, ElasticNet, ElasticNetCV
 from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.model_selection import train_test_split
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import time
-
-class Profiler(object):
-    def __enter__(self):
-        self._startTime = time.time()
-
-    def __exit__(self, type, value, traceback):
-        print
-        "Elapsed time: {:.3f} sec".format(time.time() - self._startTime)
 
 train_data = pd.concat([
     pd.read_excel('data/1-500.xls', parse_dates=[['Дата', 'Время']]),

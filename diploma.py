@@ -28,9 +28,9 @@ features_of_y = {
 # print(X)
 for y_col, x_cols_list in features_of_y.items():
     y_train = raw_data[y_col]
-    X_train = raw_data[x_cols_list]
+    X_train = raw_data.drop(columns=[y_col, 'Примечание'])
     y_test = test_data[y_col]
-    X_test = test_data[x_cols_list]
+    X_test = test_data.drop(columns=[y_col, 'Примечание'])
     regr = LinearRegression()
     regr.fit(X_train, y_train)
     elastic = ElasticNet()
