@@ -11,10 +11,14 @@ raw_data = pd.concat([
     pd.read_excel('data/1001-1500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
     pd.read_excel('data/1501-2000.xls', parse_dates=[['Дата', 'Время']], decimal=','),
     pd.read_excel('data/2001-2500.xls', parse_dates=[['Дата', 'Время']]),
+]).sample(frac=1)
+test_data = pd.concat([
     pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']]),
     pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
 ])
 raw_data['Дата_Время'] = pd.to_numeric(raw_data['Дата_Время'])
+test_data['Дата_Время'] = pd.to_numeric(test_data['Дата_Время'])
+
 features_of_y = {
     'Fг': ['Pвэ', 'Рпб', 'ИМГ', 'fдым', 'Pдэ', 'Рго'],
     'Fв': ['Pвэ', 'Рпб', 'Tвэ', 'ИМП', 'Tдк'],
@@ -23,9 +27,10 @@ features_of_y = {
 }
 # print(X)
 for y_col, x_cols_list in features_of_y.items():
-    y = raw_data[y_col]
-    X = raw_data[x_cols_list]
-    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    y_train = raw_data[y_col]
+    X_train = raw_data[x_cols_list]
+    y_test = test_data[y_col]
+    X_test = test_data[x_cols_list]
     regr = LinearRegression()
     regr.fit(X_train, y_train)
     elastic = ElasticNet()
