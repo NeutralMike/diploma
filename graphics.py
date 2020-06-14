@@ -12,16 +12,16 @@ raw_data = pd.concat([
     pd.read_excel('data/2501-3000.xls', parse_dates=[['Дата', 'Время']]),
     pd.read_excel('data/3001-3500.xls', parse_dates=[['Дата', 'Время']], decimal=','),
 ])[1000:1100]
-raw_data['Дата_Время'] = pd.to_numeric(raw_data['Дата_Время'])
 
-x_data = range(0, len(raw_data))
 
+x_data = (raw_data['Дата_Время'] - raw_data['Дата_Время'][0]).astype('timedelta64[m]')
 _, ax = plt.subplots()
 
 ax.plot(x_data, raw_data['Fг']/raw_data['Fв'], label='Fг/Fв')
 ax.plot(x_data, raw_data['ИМП'], label='ИМП')
 ax.plot(x_data, raw_data['ИМГ'], label='ИМГ')
 
-ax.set_title("Graphic")
+ax.set_title("Зависимость Fг/Fв от ИМП и ИМГ")
+ax.set_xlabel("Время (в минутах)")
 ax.legend()
 plt.show()
