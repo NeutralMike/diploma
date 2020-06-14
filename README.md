@@ -5,3 +5,4 @@
 <hr/>
 
 ![diploma document title](readme_images/predict_and_minimize_waste_py.png)
+color: #2351a3
